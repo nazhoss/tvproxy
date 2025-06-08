@@ -1,4 +1,3 @@
-
 from flask import Flask, request, Response
 import requests
 from urllib.parse import urlparse, urljoin, quote, unquote
@@ -7,6 +6,14 @@ import traceback
 import os
 
 app = Flask(__name__)
+
+# --- CORS support: allow access from anywhere ---
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+    return response
 
 def detect_m3u_type(content):
     """Rileva se è un M3U (lista IPTV) o un M3U8 (flusso HLS)"""
